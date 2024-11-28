@@ -15,24 +15,24 @@ export class BodyComponent implements OnInit, OnDestroy {
   observable$ = new Observable<number>((subscriber) => {
     setTimeout(() => {
       subscriber.next(Math.random());
-    }, 1000);
+    }, 100);
 
     setTimeout(() => {
       subscriber.next(Math.random());
-    }, 2000);
+    }, 100);
 
     setTimeout(() => {
       subscriber.next(Math.random());
-    }, 3000);
+    }, 100);
 
     setTimeout(() => {
       subscriber.next(Math.random());
-    }, 4000);
+    }, 100);
 
     setTimeout(() => {
       subscriber.next(Math.random());
       subscriber.complete();
-    }, 5000);
+    }, 100);
   });
 
   // recurring$ = new Observable<number>(function subscribe(subscriber) {
