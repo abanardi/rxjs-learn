@@ -1,8 +1,16 @@
-<p>data-table works!</p>
-<!-- <div *ngFor=""></div> -->
+<!-- <button (click)="getData()">Click me to show the data table</button>
 <div>
   @for(x of data; track x){
-  <li>{{ x }}</li>
+  <p>{{ x }}</p>
   }
-</div>
-<button (click)="getData()"></button>
+</div> -->
+<button (click)="testingObservableClick()">Test Observable here</button>
+<button (click)="oneSecondDelayClick()">1 second delay</button>
+<button (click)="fiveSecondDelayClick()">5 second delay</button>
+<button (click)="tenSecondDelayClick()">10 second delay</button>
+
+<!-- <div>
+  @for(x of dataTableObservable$ | async; track x){
+  <p>{{ x }}</p>
+  }
+</div> -->
