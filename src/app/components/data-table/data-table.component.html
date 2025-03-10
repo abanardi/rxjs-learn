@@ -4,13 +4,19 @@
   <p>{{ x }}</p>
   }
 </div> -->
-<button (click)="testingObservableClick()">Test Observable here</button>
-<button (click)="oneSecondDelayClick()">1 second delay</button>
-<button (click)="fiveSecondDelayClick()">5 second delay</button>
-<button (click)="tenSecondDelayClick()">10 second delay</button>
-
-<!-- <div>
-  @for(x of dataTableObservable$ | async; track x){
-  <p>{{ x }}</p>
-  }
-</div> -->
+<!-- <button (click)="testingObservableClick()">Test Observable here</button> -->
+<div class="switch-map">
+  <div class="buttons">
+    <button (click)="oneSecondDelaySwitchMapClick()">1 second delay</button>
+    <button (click)="fiveSecondDelaySwitchMapClick()">5 second delay</button>
+    <button (click)="tenSecondDelaySwitchMapClick()">10 second delay</button>
+  </div>
+  <div class="numbers">
+    @for( number of switchMapClickSubjectObservableEventList$ | async; track
+    number ){
+    <div class="number">
+      <h1>{{ number }}</h1>
+    </div>
+    }
+  </div>
+</div>

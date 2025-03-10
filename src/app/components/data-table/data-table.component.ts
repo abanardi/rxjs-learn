@@ -14,6 +14,8 @@ import {
   debounceTime,
   tap,
   BehaviorSubject,
+  forkJoin,
+  combineLatest,
 } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 // import { of } from 'rxjs';
@@ -50,11 +52,22 @@ export class DataTableComponent implements OnInit {
     }, 300);
   }).pipe(switchMap((val) => of(val).pipe(delay(120))));
 
-  clickSubject = new BehaviorSubject(0);
-  clickSubjectObservable$ = this.clickSubject
+  switchMapClickSubject = new BehaviorSubject(0);
+  switchMapClickSubjectObservable$ = this.switchMapClickSubject
     .asObservable()
-    .pipe(switchMap((val) => of(val).pipe(delay(val * 1000))))
-    .subscribe(console.log);
+    .pipe(switchMap((val) => of(val).pipe(delay(val * 1000))));
+
+  eventListSubject = new BehaviorSubject([]);
+  switchMapClickSubjectObservableEventList$ = combineLatest({
+    one: this.switchMapClickSubjectObservable$,
+    two: this.eventListSubject,
+  }).pipe(
+    map((val) => {
+      const array: any[] = val.two;
+      array.push(val.one);
+      return array;
+    })
+  );
 
   ngOnInit(): void {}
 
@@ -62,16 +75,16 @@ export class DataTableComponent implements OnInit {
     this.testSwitchMapObservable$.subscribe(console.log);
   }
 
-  oneSecondDelayClick() {
-    this.clickSubject.next(1);
+  oneSecondDelaySwitchMapClick() {
+    this.switchMapClickSubject.next(1);
   }
 
-  fiveSecondDelayClick() {
-    this.clickSubject.next(5);
+  fiveSecondDelaySwitchMapClick() {
+    this.switchMapClickSubject.next(5);
   }
 
-  tenSecondDelayClick() {
-    this.clickSubject.next(10);
+  tenSecondDelaySwitchMapClick() {
+    this.switchMapClickSubject.next(10);
   }
 
   // Using switchMap

@@ -1,0 +1,25 @@
+.switch-map {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.numbers {
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: row;
+  overflow: scroll;
+}
+
+.number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(93, 93, 93);
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 5rem;
+  min-width: 5rem;
+  margin-right: 2rem;
+}
