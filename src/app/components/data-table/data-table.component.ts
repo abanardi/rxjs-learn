@@ -6,6 +6,7 @@ import {
   switchMap,
   mergeMap,
   concatMap,
+  exhaustMap,
   switchAll,
   mergeAll,
   concatAll,
@@ -18,7 +19,7 @@ import {
   combineLatest,
 } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-// import { of } from 'rxjs';
+import { differenceInSeconds } from 'date-fns';
 
 @Component({
   selector: 'app-data-table',
@@ -29,62 +30,111 @@ import { AsyncPipe } from '@angular/common';
 })
 export class DataTableComponent implements OnInit {
   data: any[] = [];
+  startDate = new Date();
 
-  dataTableObservable$ = new Observable<any[]>((subscriber) => {
-    subscriber.next(['Red', 'Green', 'Blue']);
-  });
-
-  testSwitchMapObservable$ = new Observable<any>((subscriber) => {
-    console.log('Started');
-    setTimeout(() => {
-      subscriber.next('First registered');
-    }, 100);
-
-    // 1000 delta
-    setTimeout(() => {
-      subscriber.next('Second registered');
-    }, 200);
-
-    // 1500 delta
-    setTimeout(() => {
-      subscriber.next('Third registered');
-      subscriber.complete();
-    }, 300);
-  }).pipe(switchMap((val) => of(val).pipe(delay(120))));
-
-  switchMapClickSubject = new BehaviorSubject(0);
-  switchMapClickSubjectObservable$ = this.switchMapClickSubject
+  clickSubject = new BehaviorSubject(0);
+  switchMapClickSubjectObservable$ = this.clickSubject
     .asObservable()
     .pipe(switchMap((val) => of(val).pipe(delay(val * 1000))));
 
-  eventListSubject = new BehaviorSubject([]);
+  switchMapEventListSubject = new BehaviorSubject([]);
   switchMapClickSubjectObservableEventList$ = combineLatest({
     one: this.switchMapClickSubjectObservable$,
-    two: this.eventListSubject,
+    two: this.switchMapEventListSubject,
   }).pipe(
     map((val) => {
+      const now = new Date();
+      const time = differenceInSeconds(now, this.startDate);
       const array: any[] = val.two;
-      array.push(val.one);
+      array.push({ value: val.one, time: time });
+      return array;
+    })
+  );
+
+  concatMapClickSubjectObservable$ = this.clickSubject
+    .asObservable()
+    .pipe(concatMap((val) => of(val).pipe(delay(val * 1000))));
+
+  concatMapEventListSubject = new BehaviorSubject([]);
+  concatMapClickSubjectObservableEventList$ = combineLatest({
+    one: this.concatMapClickSubjectObservable$,
+    two: this.concatMapEventListSubject,
+  }).pipe(
+    map((val) => {
+      const now = new Date();
+      const time = differenceInSeconds(now, this.startDate);
+      const array: any[] = val.two;
+      array.push({ value: val.one, time: time });
+      return array;
+    })
+  );
+
+  mergeMapClickSubjectObservable$ = this.clickSubject
+    .asObservable()
+    .pipe(mergeMap((val) => of(val).pipe(delay(val * 1000))));
+
+  mergeMapEventListSubject = new BehaviorSubject([]);
+  mergeMapClickSubjectObservableEventList$ = combineLatest({
+    one: this.mergeMapClickSubjectObservable$,
+    two: this.mergeMapEventListSubject,
+  }).pipe(
+    map((val) => {
+      const now = new Date();
+      const time = differenceInSeconds(now, this.startDate);
+      const array: any[] = val.two;
+      array.push({ value: val.one, time: time });
+      return array;
+    })
+  );
+
+  exhaustMapClickSubjectObservable$ = this.clickSubject
+    .asObservable()
+    .pipe(exhaustMap((val) => of(val).pipe(delay(val * 1000))));
+
+  exhaustMapEventListSubject = new BehaviorSubject([]);
+  exhaustMapClickSubjectObservableEventList$ = combineLatest({
+    one: this.exhaustMapClickSubjectObservable$,
+    two: this.exhaustMapEventListSubject,
+  }).pipe(
+    map((val) => {
+      const now = new Date();
+      const time = differenceInSeconds(now, this.startDate);
+      const array: any[] = val.two;
+      array.push({ value: val.one, time: time });
+      return array;
+    })
+  );
+
+  noDelayClickSubjectObservable$ = this.clickSubject
+    .asObservable()
+    .pipe(switchMap((val) => of(val)));
+
+  noDelayEventListSubject = new BehaviorSubject([]);
+  noDelayClickSubjectObservableEventList$ = combineLatest({
+    one: this.noDelayClickSubjectObservable$,
+    two: this.noDelayEventListSubject,
+  }).pipe(
+    map((val) => {
+      const now = new Date();
+      const time = differenceInSeconds(now, this.startDate);
+      const array: any[] = val.two;
+      array.push({ value: val.one, time: time });
       return array;
     })
   );
 
   ngOnInit(): void {}
 
-  testingObservableClick() {
-    this.testSwitchMapObservable$.subscribe(console.log);
-  }
-
   oneSecondDelaySwitchMapClick() {
-    this.switchMapClickSubject.next(1);
+    this.clickSubject.next(1);
   }
 
   fiveSecondDelaySwitchMapClick() {
-    this.switchMapClickSubject.next(5);
+    this.clickSubject.next(5);
   }
 
   tenSecondDelaySwitchMapClick() {
-    this.switchMapClickSubject.next(10);
+    this.clickSubject.next(10);
   }
 
   // Using switchMap
@@ -95,14 +145,4 @@ export class DataTableComponent implements OnInit {
 
   // Using concatMap
   /* If I click 10, 5, 1 it will show 10 5 1*/
-
-  getData() {
-    this.dataTableObservable$.subscribe((val: any[]) => {
-      if (this.data.length === 0) {
-        this.data = val;
-      } else {
-        this.data = [];
-      }
-    });
-  }
 }

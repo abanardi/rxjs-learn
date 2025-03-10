@@ -1,22 +1,92 @@
-<!-- <button (click)="getData()">Click me to show the data table</button>
-<div>
-  @for(x of data; track x){
-  <p>{{ x }}</p>
-  }
-</div> -->
-<!-- <button (click)="testingObservableClick()">Test Observable here</button> -->
-<div class="switch-map">
-  <div class="buttons">
-    <button (click)="oneSecondDelaySwitchMapClick()">1 second delay</button>
-    <button (click)="fiveSecondDelaySwitchMapClick()">5 second delay</button>
-    <button (click)="tenSecondDelaySwitchMapClick()">10 second delay</button>
-  </div>
-  <div class="numbers">
-    @for( number of switchMapClickSubjectObservableEventList$ | async; track
-    number ){
-    <div class="number">
-      <h1>{{ number }}</h1>
+<div class="buttons">
+  <button class="option" (click)="oneSecondDelaySwitchMapClick()">
+    1 second delay
+  </button>
+  <button class="option" (click)="fiveSecondDelaySwitchMapClick()">
+    5 second delay
+  </button>
+  <button class="option" (click)="tenSecondDelaySwitchMapClick()">
+    10 second delay
+  </button>
+</div>
+<div class="app">
+  <div class="switch-map"></div>
+  <div class="time-list">
+    <div class="row">
+      <div class="time-title">Time</div>
+      <div class="action-title">Action</div>
     </div>
+    @for( number of noDelayClickSubjectObservableEventList$ | async; track
+    number ){
+    <div class="row">
+      <div class="time">
+        <h2>{{ number.time }}</h2>
+      </div>
+      <div class="number-time">
+        <h1>{{ number.value }}</h1>
+      </div>
+    </div>
+
     }
+  </div>
+  <div class="timeline-container">
+    <div class="timeline">
+      <div class="numbers">
+        <div class="name">
+          <h1>switchMap</h1>
+        </div>
+        @for( number of switchMapClickSubjectObservableEventList$ | async; track
+        number ){
+        <div class="number-container">
+          <div class="number">
+            <h1>{{ number.value }}</h1>
+          </div>
+          <div class="below-time">{{ number.time }}</div>
+        </div>
+        }
+      </div>
+      <div class="numbers">
+        <div class="name">
+          <h1>concatMap</h1>
+        </div>
+        @for( number of concatMapClickSubjectObservableEventList$ | async; track
+        number ){
+        <div class="number-container">
+          <div class="number">
+            <h1>{{ number.value }}</h1>
+          </div>
+          <div class="below-time">{{ number.time }}</div>
+        </div>
+        }
+      </div>
+      <div class="numbers">
+        <div class="name">
+          <h1>mergeMap</h1>
+        </div>
+        @for( number of mergeMapClickSubjectObservableEventList$ | async; track
+        number ){
+        <div class="number-container">
+          <div class="number">
+            <h1>{{ number.value }}</h1>
+          </div>
+          <div class="below-time">{{ number.time }}</div>
+        </div>
+        }
+      </div>
+      <div class="numbers">
+        <div class="name">
+          <h1>exhaustMap</h1>
+        </div>
+        @for( number of exhaustMapClickSubjectObservableEventList$ | async;
+        track number ){
+        <div class="number-container">
+          <div class="number">
+            <h1>{{ number.value }}</h1>
+          </div>
+          <div class="below-time">{{ number.time }}</div>
+        </div>
+        }
+      </div>
+    </div>
   </div>
 </div>
